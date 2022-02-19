@@ -1,4 +1,15 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  Delete,
+  HttpStatus,
+  HttpCode,
+} from '@nestjs/common';
 
 @Controller('products') //estructura por defecto
 export class ProductsController {
@@ -33,6 +44,23 @@ export class ProductsController {
     return {
       message: 'este es un producto creado',
       payload,
+    };
+  }
+
+  @Put(':productId')
+  update(@Param('productId') productId: string, @Body() payload: any) {
+    return {
+      message: 'este es un producto editado',
+      payload,
+    };
+  }
+
+  @Delete(':productId')
+  @HttpCode(HttpStatus.OK) // 👈 Using decorator
+  DeleteOne(@Param('productId') productId: string) {
+    return {
+      message: 'este es un producto eliminado',
+      productId,
     };
   }
 }
