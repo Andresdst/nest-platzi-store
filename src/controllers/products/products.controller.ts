@@ -9,23 +9,33 @@ import {
   Delete,
   HttpStatus,
   HttpCode,
+  NotFoundException,
 } from '@nestjs/common';
+
+import { ProductsService } from 'src/services/products/products.service';
 
 @Controller('products') //estructura por defecto
 export class ProductsController {
+  constructor(private productsService: ProductsService) {}
+
   @Get('filter') //las rutas fijas van de primero, las dinamicas al final
   getProductFilter() {
     return {
-      message: `yo soy un filter`,
+      message: `yo soy una ruta`,
     };
   }
 
   @Get(':productId')
-  getOne(@Param('productId') productId: string) {
-    return {
-      message: 'este es un producto',
-      productId,
-    };
+  getOne(@Param('productId') productId: number) {
+    // return {
+    //   message: 'este es un producto',
+    //   productId,
+    // };
+    const product = this.productsService.findOne(productId);
+    if (!product) {
+      throw new NotFoundException('there is no product');
+    }
+    return product;
   }
 
   @Get()
@@ -34,17 +44,21 @@ export class ProductsController {
     @Query('offset') offset = 0, //desde donde comienza.
     @Query('brand') brand: string,
   ) {
-    return {
-      message: `products limit=> ${limit} offset=> ${offset} brand=> ${brand}`,
-    };
+    // return {
+    //   message: `products limit=> ${limit} offset=> ${offset} brand=> ${brand}`,
+    // };
+
+    return this.productsService.findAll();
   }
 
   @Post()
   create(@Body() payload: any) {
-    return {
-      message: 'este es un producto creado',
-      payload,
-    };
+    // return {
+    //   message: 'este es un producto creado',
+    //   payload,
+    // };
+
+    return this.productsService.create(payload);
   }
 
   @Put(':productId')
