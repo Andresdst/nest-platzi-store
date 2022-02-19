@@ -1,15 +1,20 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 
 @Controller('products') //estructura por defecto
 export class ProductsController {
   @Get('filter') //las rutas fijas van de primero, las dinamicas al final
   getProductFilter() {
-    return `yo soy un filter`;
+    return {
+      message: `yo soy un filter`,
+    };
   }
 
   @Get(':productId')
-  getProduct(@Param('productId') productId: string) {
-    return `product ${productId}`;
+  getOne(@Param('productId') productId: string) {
+    return {
+      message: 'este es un producto',
+      productId,
+    };
   }
 
   @Get()
@@ -18,6 +23,16 @@ export class ProductsController {
     @Query('offset') offset = 0, //desde donde comienza.
     @Query('brand') brand: string,
   ) {
-    return `products limit=> ${limit} offset=> ${offset} brand=> ${brand}`;
+    return {
+      message: `products limit=> ${limit} offset=> ${offset} brand=> ${brand}`,
+    };
+  }
+
+  @Post()
+  create(@Body() payload: any) {
+    return {
+      message: 'este es un producto creado',
+      payload,
+    };
   }
 }
