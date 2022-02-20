@@ -10,6 +10,7 @@ import {
   HttpStatus,
   HttpCode,
   NotFoundException,
+  ParseIntPipe,
 } from '@nestjs/common';
 
 import { ProductsService } from 'src/services/products/products.service';
@@ -26,7 +27,7 @@ export class ProductsController {
   }
 
   @Get(':productId')
-  getOne(@Param('productId') productId: number) {
+  getOne(@Param('productId', ParseIntPipe) productId: number) {
     // return {
     //   message: 'este es un producto',
     //   productId,
