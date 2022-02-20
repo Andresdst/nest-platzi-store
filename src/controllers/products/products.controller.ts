@@ -14,6 +14,7 @@ import {
 } from '@nestjs/common';
 
 import { ProductsService } from 'src/services/products/products.service';
+import { CreateProductDto, UpdateProductDto } from 'src/DTOs/products.dto';
 
 @Controller('products') //estructura por defecto
 export class ProductsController {
@@ -53,7 +54,7 @@ export class ProductsController {
   }
 
   @Post()
-  create(@Body() payload: any) {
+  create(@Body() payload: CreateProductDto) {
     // return {
     //   message: 'este es un producto creado',
     //   payload,
@@ -63,7 +64,10 @@ export class ProductsController {
   }
 
   @Put(':productId')
-  update(@Param('productId') productId: string, @Body() payload: any) {
+  update(
+    @Param('productId') productId: string,
+    @Body() payload: UpdateProductDto,
+  ) {
     return {
       message: 'este es un producto editado',
       payload,
